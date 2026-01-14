@@ -9,11 +9,14 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="DTOs\" />
-    <Folder Include="Data\" />
     <Folder Include="Middleware\" />
     <Folder Include="Helpers\" />
     <Folder Include="wwwroot\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.23" />
   </ItemGroup>
 
 </Project>
