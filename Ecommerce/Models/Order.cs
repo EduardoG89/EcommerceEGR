@@ -9,8 +9,9 @@
         public decimal ShippingCost { get; set; }
         public decimal Total { get; set; }
         public string Status { get; set; }
-        public Decimal CreatedAt { get; set; }
-        public Decimal UpdateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? ShippedAt { get; set; }
+        public DateTime? DeliveredAt { get; set; }
         public User User { get; set; }
         public ShippingAddress ShippingAddress { get; set; }
         public Payment Payment { get; set; }

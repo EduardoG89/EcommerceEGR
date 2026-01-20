@@ -30,15 +30,13 @@ namespace Ecommerce.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
                 entity.HasIndex(e => e.Email).IsUnique();
-                entity.Property(e => e.Password).IsRequired();
+                entity.Property(e => e.Password).IsRequired(); 
                 entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.PhoneNumber).HasMaxLength(20);
                 entity.Property(e => e.IsAdmin).HasDefaultValue(false);
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-
             });
-
 
             modelBuilder.Entity<Category>(entity =>
             {
@@ -47,9 +45,7 @@ namespace Ecommerce.Data
                 entity.Property(e => e.Description).HasMaxLength(500);
                 entity.Property(e => e.ImageUrl).HasMaxLength(255);
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-
             });
-
 
             modelBuilder.Entity<Product>(entity =>
             {
@@ -60,15 +56,11 @@ namespace Ecommerce.Data
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
 
-
                 entity.HasOne(e => e.Category)
-                .WithMany(e => e.Products)
-                .HasForeignKey(e => e.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+                      .WithMany(c => c.Products) 
+                      .HasForeignKey(e => e.CategoryId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
-
-
 
             modelBuilder.Entity<ProductVariant>(entity =>
             {
@@ -80,17 +72,14 @@ namespace Ecommerce.Data
                 entity.Property(e => e.PhoneModel).HasMaxLength(50);
                 entity.Property(e => e.Material).HasMaxLength(50);
                 entity.Property(e => e.Stock).HasDefaultValue(0);
-                entity.Property(e => e.Stock).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.PriceAdjustment).HasColumnType("decimal(10,2)"); 
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
 
-
                 entity.HasOne(e => e.Product)
-                .WithMany(p => p.Variants)
-                .HasForeignKey(e => e.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+                      .WithMany(p => p.Variants)
+                      .HasForeignKey(e => e.ProductId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
-
 
             modelBuilder.Entity<ProductImage>(entity =>
             {
@@ -100,9 +89,9 @@ namespace Ecommerce.Data
                 entity.Property(e => e.IsPrimary).HasDefaultValue(false);
 
                 entity.HasOne(e => e.Product)
-                .WithMany(p => p.Images)
-                .HasForeignKey(e => e.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                      .WithMany(p => p.Images)
+                      .HasForeignKey(e => e.ProductId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -113,26 +102,24 @@ namespace Ecommerce.Data
                 entity.Property(e => e.Subtotal).HasColumnType("decimal(10,2)").IsRequired();
                 entity.Property(e => e.ShippingCost).HasColumnType("decimal(10,2)").IsRequired();
                 entity.Property(e => e.Total).HasColumnType("decimal(10,2)").IsRequired();
-                entity.Property(e => e.Total).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.Status).IsRequired().HasMaxLength(20); 
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
 
                 entity.HasOne(e => e.User)
-                .WithMany(e => e.Orders)
-                .HasForeignKey(e => e.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                      .WithMany(u => u.Orders) 
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(e => e.ShippingAddress)
-                .WithOne()
-                .HasForeignKey<ShippingAddress>(s => s.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
+                      .WithOne()
+                      .HasForeignKey<ShippingAddress>(s => s.OrderId)
+                      .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(e => e.Payment)
-                .WithOne(e => e.Order)
-                .HasForeignKey<Payment>(p => p.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+                      .WithOne(p => p.Order) 
+                      .HasForeignKey<Payment>(p => p.OrderId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
-
 
             modelBuilder.Entity<OrderItem>(entity =>
             {
@@ -152,38 +139,38 @@ namespace Ecommerce.Data
                       .WithMany()
                       .HasForeignKey(e => e.ProductVariantId)
                       .OnDelete(DeleteBehavior.Restrict);
+            }); 
 
+            modelBuilder.Entity<ShippingAddress>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.FullName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.Street).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Number).IsRequired().HasMaxLength(10);
+                entity.Property(e => e.AdditionalInfo).HasMaxLength(200);
+                entity.Property(e => e.City).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.State).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.PostalCode).IsRequired().HasMaxLength(10);
+                entity.Property(e => e.Country).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.IsDefault).HasDefaultValue(false);
 
-                modelBuilder.Entity<ShippingAddress>(entity =>
-                {
-                    entity.HasKey(e => e.Id);
-                    entity.Property(e => e.FullName).IsRequired().HasMaxLength(100);
-                    entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(20);
-                    entity.Property(e => e.Street).IsRequired().HasMaxLength(100);
-                    entity.Property(e => e.Number).IsRequired().HasMaxLength(10);
-                    entity.Property(e => e.AdditionalInfo).HasMaxLength(200);
-                    entity.Property(e => e.City).IsRequired().HasMaxLength(50);
-                    entity.Property(e => e.State).IsRequired().HasMaxLength(50);
-                    entity.Property(e => e.PostalCode).IsRequired().HasMaxLength(10);
-                    entity.Property(e => e.Country).IsRequired().HasMaxLength(50);
-                    entity.Property(e => e.IsDefault).HasDefaultValue(false);
+                entity.HasOne(e => e.User)
+                      .WithMany(u => u.ShippingAddresses) 
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
 
-                    entity.HasOne(e => e.User)
-                          .WithMany(e => e.ShippingAddresses)
-                          .HasForeignKey(e => e.UserId)
-                          .OnDelete(DeleteBehavior.Cascade);
-                });
-
-                modelBuilder.Entity<Payment>(entity =>
-                {
-                    entity.HasKey(e => e.Id);
-                    entity.Property(e => e.PaymentMethod).IsRequired().HasMaxLength(50);
-                    entity.Property(e => e.TransactionId).HasMaxLength(100);
-                    entity.Property(e => e.Amount).HasColumnType("decimal(10,2)").IsRequired();
-                    entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
-                    entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-                });
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.PaymentMethod).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.TransactionId).HasMaxLength(100);
+                entity.Property(e => e.Amount).HasColumnType("decimal(10,2)").IsRequired();
+                entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
             });
         }
+
     }
 }
