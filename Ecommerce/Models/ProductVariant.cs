@@ -10,7 +10,7 @@
         public string Material { get; set; }
         public int Stock { get; set; }
         public string Size { get; set; }
-        public decimal PriceAdjustment { get; set; }
+        public decimal? PriceAdjustment { get; set; }
         public bool IsActive { get; set; }
         public Product Product { get; set; }
     }
