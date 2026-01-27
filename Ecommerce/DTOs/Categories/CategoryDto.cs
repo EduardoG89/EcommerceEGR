@@ -7,6 +7,6 @@
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public bool IsActive { get; set; }
-        public int ProductVariant { get; set; }
+        public int ProductCount { get; set; }
     }
 }
