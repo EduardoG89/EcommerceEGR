@@ -2,7 +2,7 @@
 {
     public class UpdateOrderStatusDto
     {
-        public int Order { get; set; }
+        public int OrderId { get; set; }
         public string Status { get; set; }
     }
 }
