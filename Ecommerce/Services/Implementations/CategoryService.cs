@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Services.Implementations
 {
-    public class CategoryServices : ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly AppDbContext _context;
 
-        public CategoryServices(AppDbContext context)
+        public CategoryService(AppDbContext context)
         {
             _context = context;
         }

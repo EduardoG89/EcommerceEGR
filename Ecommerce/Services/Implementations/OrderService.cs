@@ -96,7 +96,7 @@ namespace Ecommerce.Services.Implementations
 
                 var order = new Order
                 {
-                    UserId = createOrderDto.UserId ?? 0, 
+                    UserId = createOrderDto.UserId ?? 0,
                     OrderNumber = GenerateOrderNumber(),
                     Subtotal = subtotal,
                     ShippingCost = shippingCost,
