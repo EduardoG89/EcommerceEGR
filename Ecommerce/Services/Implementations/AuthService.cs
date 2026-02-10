@@ -43,7 +43,7 @@ namespace Ecommerce.Services.Implementations
 
         private string GenerateToken(User user)
         {
-            throw new NotImplementedException();
+            return "token-temporal";
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
