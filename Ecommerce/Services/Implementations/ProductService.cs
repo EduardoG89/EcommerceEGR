@@ -152,7 +152,7 @@ namespace Ecommerce.Services.Implementations
                 Description = product.Description,
                 Price = product.Price,
                 CategoryId = product.CategoryId,
-                CategoryName = product.Category.Name,
+                CategoryName = product.Category?.Name,
                 IsActive = product.IsActive,
                 Images = product.Images?.Select(i => new ProductImageDto
                 {
