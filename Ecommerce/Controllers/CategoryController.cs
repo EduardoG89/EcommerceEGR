@@ -94,5 +94,31 @@ namespace Ecommerce.Controllers
                 });
             }
         }
+
+        [HttpDelete]
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteCategory(int id)
+        {
+            try
+            {
+                var result = await _categoryService.DeleteCategoryAsync(id);
+
+                return Ok(new ApiResponse<bool>
+                {
+                    Success = true,
+                    Data = result,
+                    Message = "Categoria eliminado exitosamente"
+                });
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Erroa la eliminar la categoria",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
+        }
     }
 }
