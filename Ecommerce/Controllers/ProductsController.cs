@@ -23,6 +23,7 @@ namespace Ecommerce.Controllers
         {
             try
             {
+                
                 var product = await _productServices.CreateProductAsync(createProductDto);
 
                 return CreatedAtAction(
