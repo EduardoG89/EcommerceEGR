@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Data;
 using Ecommerce.DTOs.Auth;
+using Ecommerce.Helpers;
 using Ecommerce.Models;
 using Ecommerce.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +11,16 @@ namespace Ecommerce.Services.Implementations
     {
 
         private readonly AppDbContext _context;
+        private readonly JwtHelper _jwtHelper;
         private string token = "";
 
-        public AuthService(AppDbContext context)
+        public AuthService(AppDbContext context, JwtHelper jwtHelper)
         {
             _context = context;
+            _jwtHelper = jwtHelper;
         }
+
+
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
             var user = await _context.Users
@@ -27,7 +32,7 @@ namespace Ecommerce.Services.Implementations
             if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
                 throw new Exception("Credenciales invalidas");
 
-            token = GenerateToken(user);
+            token = _jwtHelper.GenerateToken(user.Id, user.Email, user.IsAdmin);
 
             return new AuthResponseDto
             {
@@ -39,11 +44,6 @@ namespace Ecommerce.Services.Implementations
                 Token = token,
             };
 
-        }
-
-        private string GenerateToken(User user)
-        {
-            return "token-temporal";
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
@@ -65,7 +65,7 @@ namespace Ecommerce.Services.Implementations
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            token = GenerateToken(user);
+            token = _jwtHelper.GenerateToken(user.Id, user.Email, user.IsAdmin);
 
             return new AuthResponseDto
             {

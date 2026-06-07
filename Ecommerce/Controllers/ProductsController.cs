@@ -2,6 +2,7 @@
 using Ecommerce.DTOs.Products;
 using Ecommerce.Models;
 using Ecommerce.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Controllers
@@ -17,7 +18,7 @@ namespace Ecommerce.Controllers
             _productServices = productService;
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<ApiResponse<ProductDto>>> CreateProduct([FromBody] CreateProductDto createProductDto)
         {
@@ -102,6 +103,7 @@ namespace Ecommerce.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResponse<ProductDto>>> UpdateProduct(int id, [FromBody] UpdateProductDto updateProductDto)
         {
@@ -137,6 +139,7 @@ namespace Ecommerce.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ApiResponse<ProductDto>>> DeleteProduct(int id)
         {
@@ -187,6 +190,7 @@ namespace Ecommerce.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("variants")]
         public async Task<ActionResult<ApiResponse<ProductVariantDto>>> AddVariant([FromBody] CreateProductVariantDto createProductVariantDto)
         {
@@ -213,6 +217,7 @@ namespace Ecommerce.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPatch("variant/{variantId}/stock")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateStock(int variantId, [FromBody] int quantity)
         {
